@@ -2,20 +2,24 @@ package microservice.lesson1;
 
 public class Greeting {
 
-    private final long id;
-    private final String content;
+    private final Long id;
+    private String content;
 
-    public Greeting(long id, String content) {
+    public Greeting(Long id, String content) {
         this.id = id;
         this.content = content;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
