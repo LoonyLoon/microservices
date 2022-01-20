@@ -1,13 +1,14 @@
 package microservice.lesson1;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
+import microservice.lesson1.Greeting;
 import logger.LoggerExecutor;
+import exception.GreetingNotFoundException;
+import exception.GreetingAlreadyExistsException;
+import service.GreetingServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,80 +17,82 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/greeting")
 public class GreetingController {
 
-    private static final String template = "Hello, %s!";
-    private static final String defaultContent = "Diasoft";
-    private final AtomicLong counter = new AtomicLong();
-    private static List<Greeting> greetings = new ArrayList<>();
+    private static final String TEMPLATE = "Hello, %s!";
+    private static final String DEFAULT_CONTENT = "DIASOFT";
+    private static final String NAME_FIELD = "name";
 
-    private Greeting getGreeting (Long id) {
-        Optional<Greeting> greeting = greetings.stream()
-                .filter(gr -> gr.getId().equals(id))
-                .findFirst();
+    @Autowired
+    private GreetingServiceImpl greetingService;
 
-        if (greeting.equals(Optional.empty())) return null;
-
-        return greeting.get();
-    }
-
-    @LoggerExecutor
     @GetMapping
-    public static ResponseEntity<List<Greeting>> getAll(
+    public ResponseEntity<List<Greeting>> getAll(
     ) {
-        return ResponseEntity.ok(greetings);
+        return ResponseEntity.ok(greetingService.browse());
     }
 
-    @LoggerExecutor
     @GetMapping("/{id}")
     public ResponseEntity<Greeting> getByID(
             @PathVariable("id") Long id
     ) {
-        Greeting greeting = getGreeting(id);
-        if (null == greeting) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(greeting);
+        try {
+            Greeting greeting = greetingService.findByID(id);
+            if (null == greeting) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(greeting);
+        } catch (GreetingNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 
-    @LoggerExecutor
     @PostMapping
     public ResponseEntity<Greeting> create(
             @RequestBody Map<String, Object> params
     ) {
-        String name = (String) params.get("name");
-        if (null == name) name = defaultContent;
+        try {
+            String name = (String) params.get(NAME_FIELD);
+            if (null == name) name = DEFAULT_CONTENT;
 
-        Greeting greeting = new Greeting(counter.incrementAndGet(), String.format(template, name));
-        greetings.add(greeting);
+            Greeting greeting = new Greeting(String.format(TEMPLATE, name));
+            greetingService.create(greeting);
 
-        return ResponseEntity.ok(greeting);
+            return ResponseEntity.ok(greeting);
+        } catch (GreetingAlreadyExistsException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
-    @LoggerExecutor
     @PutMapping("/{id}")
     public ResponseEntity<Greeting> update(
             @PathVariable("id") Long id,
             @RequestBody Map<String, Object> params
     ) {
-        Greeting greeting = getGreeting(id);
-        if (null == greeting) return ResponseEntity.notFound().build();
+        try {
+            Greeting greeting = greetingService.findByID(id);
+            if (null == greeting) return ResponseEntity.notFound().build();
 
-        String name = (String) params.get("name");
-        if (null == name) name = defaultContent;
+            String name = (String) params.get(NAME_FIELD);
+            if (null == name) name = DEFAULT_CONTENT;
 
-        greeting.setContent(String.format(template, name));
+            greeting.setContent(String.format(TEMPLATE, name));
+            greetingService.update(greeting);
 
-        return ResponseEntity.ok(greeting);
+            return ResponseEntity.ok(greeting);
+        } catch (GreetingNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @LoggerExecutor
     @DeleteMapping("/{id}")
     public ResponseEntity delete(
             @PathVariable("id") Long id
     ) {
-        Greeting greeting = getGreeting(id);
-        if (null == greeting) return ResponseEntity.notFound().build();
-
-        greetings.remove(greeting);
-        return ResponseEntity.noContent().build();
+        try {
+            greetingService.remove(id);
+            return ResponseEntity.noContent().build();
+        } catch (GreetingNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
+
 
