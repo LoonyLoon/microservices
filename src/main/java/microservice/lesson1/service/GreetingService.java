@@ -1,4 +1,4 @@
-package service;
+package microservice.lesson1.service;
 
 import microservice.lesson1.Greeting;
 

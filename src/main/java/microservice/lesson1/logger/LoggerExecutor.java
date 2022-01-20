@@ -1,4 +1,4 @@
-package logger;
+package microservice.lesson1.logger;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

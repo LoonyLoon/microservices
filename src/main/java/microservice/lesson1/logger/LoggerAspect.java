@@ -1,4 +1,4 @@
-package logger;
+package microservice.lesson1.logger;
 
 
 import org.aspectj.lang.JoinPoint;

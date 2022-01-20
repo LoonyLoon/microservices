@@ -1,4 +1,4 @@
-package repository;
+package microservice.lesson1.repository;
 
 import microservice.lesson1.Greeting;
 import org.springframework.data.repository.CrudRepository;

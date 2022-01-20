@@ -3,11 +3,8 @@ package microservice.lesson1;
 import java.util.List;
 import java.util.Map;
 
-import microservice.lesson1.Greeting;
-import logger.LoggerExecutor;
-import exception.GreetingNotFoundException;
-import exception.GreetingAlreadyExistsException;
-import service.GreetingServiceImpl;
+import microservice.lesson1.exception.*;
+import microservice.lesson1.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -18,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 public class GreetingController {
 
     private static final String TEMPLATE = "Hello, %s!";
-    private static final String DEFAULT_CONTENT = "DIASOFT";
+    private static final String DEFAULT_CONTENT = "World";
     private static final String NAME_FIELD = "name";
 
     @Autowired
@@ -94,5 +91,3 @@ public class GreetingController {
         }
     }
 }
-
-
