@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-master.yaml
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - createTable:
+            tableName: greeting
+            columns:
+              - column:
+                  name: greeting_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - createSequence:
+            sequenceName:  GREETING_SEQUENCE
