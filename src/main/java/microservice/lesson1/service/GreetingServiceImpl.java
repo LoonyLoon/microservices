@@ -5,8 +5,8 @@ import microservice.lesson1.exception.*;
 import microservice.lesson1.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class GreetingServiceImpl implements GreetingService {
     private GreetingRepository entityRepository;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Greeting> browse() {
         List<Greeting> list = new ArrayList<>();
         entityRepository.findAll().forEach(e -> list.add(e) );
@@ -25,7 +25,7 @@ public class GreetingServiceImpl implements GreetingService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Greeting findByID(long id) throws GreetingNotFoundException {
         if (entityRepository.existsById(id)) {
             return entityRepository.findById(id).get();
@@ -35,7 +35,6 @@ public class GreetingServiceImpl implements GreetingService {
     }
 
     @Override
-    @Transactional
     public Greeting create(Greeting greeting) throws GreetingAlreadyExistsException {
         return entityRepository.save(greeting);
     }
