@@ -27,35 +27,35 @@ public class GreetingServiceImpl implements GreetingService {
     @Override
     @Transactional(readOnly = true)
     public Greeting findByID(long id) throws GreetingNotFoundException {
-        if (entityRepository.existsById(id)) {
-            return entityRepository.findById(id).get();
-        } else {
+        if (!entityRepository.findById(id).isPresent()) {
             throw new GreetingNotFoundException("Greeting by ID(" + id + ") not found");
         }
+        return entityRepository.findById(id).get();
     }
 
     @Override
     public Greeting create(Greeting greeting) throws GreetingAlreadyExistsException {
+        if (entityRepository.findById(greeting.getId()).isPresent()) {
+            throw new GreetingAlreadyExistsException("Greeting (" + greeting.toString() + ") already exists");
+        }
         return entityRepository.save(greeting);
     }
 
     @Override
     @Transactional
     public Greeting update(Greeting greeting) throws GreetingNotFoundException {
-        if (entityRepository.existsById(greeting.getId())) {
-            return entityRepository.save(greeting);
-        } else {
+        if (entityRepository.findById(greeting.getId()).isPresent()) {
             throw new GreetingNotFoundException("Greeting by ID(" + greeting.getId() + ") not found");
         }
+        return entityRepository.save(greeting);
     }
 
     @Override
     @Transactional
     public void remove(long id) throws GreetingNotFoundException {
-        if (entityRepository.existsById(id)) {
-            entityRepository.deleteById(id);
-        } else {
+        if (entityRepository.findById(id).isPresent()) {
             throw new GreetingNotFoundException("Greeting by ID(" + id + ") not found");
         }
+        entityRepository.deleteById(id);
     }
 }
