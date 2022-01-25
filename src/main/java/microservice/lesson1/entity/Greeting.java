@@ -1,4 +1,4 @@
-package microservice.lesson1;
+package microservice.lesson1.entity;
 
 import javax.persistence.*;
 

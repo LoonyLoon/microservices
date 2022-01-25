@@ -1,7 +1,7 @@
 package microservice.lesson1;
 
-import microservice.lesson1.GreetingController;
-import microservice.lesson1.Greeting;
+import microservice.lesson1.controller.GreetingController;
+import microservice.lesson1.entity.Greeting;
 import microservice.lesson1.service.GreetingServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;

@@ -1,7 +1,7 @@
 package microservice.lesson1;
 
 import microservice.lesson1.repository.GreetingRepository;
-import microservice.lesson1.Greeting;
+import microservice.lesson1.entity.Greeting;
 
 import org.junit.Assert;
 import org.junit.Test;

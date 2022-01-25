@@ -1,14 +1,16 @@
-package microservice.lesson1;
+package microservice.lesson1.controller;
+
+import microservice.lesson1.entity.Greeting;
+import microservice.lesson1.exception.GreetingAlreadyExistsException;
+import microservice.lesson1.exception.GreetingNotFoundException;
+import microservice.lesson1.service.GreetingServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-import microservice.lesson1.exception.*;
-import microservice.lesson1.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 @RestController("GreetingController")
 @RequestMapping("/greeting")

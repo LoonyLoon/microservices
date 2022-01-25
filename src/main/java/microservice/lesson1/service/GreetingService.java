@@ -1,6 +1,6 @@
 package microservice.lesson1.service;
 
-import microservice.lesson1.Greeting;
+import microservice.lesson1.entity.Greeting;
 import microservice.lesson1.exception.*;
 
 
