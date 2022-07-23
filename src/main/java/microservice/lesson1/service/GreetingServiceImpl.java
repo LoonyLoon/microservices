@@ -35,7 +35,7 @@ public class GreetingServiceImpl implements GreetingService {
 
     @Override
     public Greeting create(Greeting greeting) throws GreetingAlreadyExistsException {
-        if (entityRepository.findById(greeting.getId()).isPresent()) {
+        if (greeting.getId() != null && entityRepository.findById(greeting.getId()).isPresent()) {
             throw new GreetingAlreadyExistsException("Greeting (" + greeting.toString() + ") already exists");
         }
         return entityRepository.save(greeting);

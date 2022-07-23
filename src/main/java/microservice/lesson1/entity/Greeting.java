@@ -7,8 +7,8 @@ import javax.persistence.*;
 public class Greeting {
     @Id
     @Column(name = "greeting_id")
-    @SequenceGenerator(name="GREETING_SEQUENCE", sequenceName="GREETING_SEQUENCE", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.AUTO, generator="GREETING_SEQUENCE")
+    @SequenceGenerator(name="GREETING_SEQUENCE", sequenceName="GREETING_SEQUENCE", allocationSize=1)
     private Long id;
 
     @Column(name = "content")
